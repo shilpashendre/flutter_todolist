@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/constants/app_text_theme.dart';
+import 'package:todolist/widget/icon_widget.dart';
 
 class SectionsWidget extends StatelessWidget {
   final String title;
@@ -15,10 +17,10 @@ class SectionsWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            style: AppTextTheme.titleStyle,
           ),
           const SizedBox(width: 15),
-          InkWell(onTap: onTap, child: const Icon(Icons.add_circle_outline))
+          IconWidget(onTap: onTap, iconName: Icons.add_circle_outline)
         ],
       ),
     );

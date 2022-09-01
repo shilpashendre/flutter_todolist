@@ -81,21 +81,29 @@ class _AddTaskPageState extends State<AddTaskPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Text("Title:"),
             ),
-            AppTextFormField(controller: addTitleController, labelText: "Text"),
-            SizedBox(
+            AppTextFormField(
+                controller: addTitleController,
+                labelText: "Text*",
+                validator: (text) {
+                  if (text != null && text.isEmpty) {
+                    return "Title is required";
+                  }
+                  return null;
+                }),
+            const SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Text("Description:"),
             ),
             AppTextFormField(
                 controller: addDescriptionController, labelText: "Description"),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             AppButton(

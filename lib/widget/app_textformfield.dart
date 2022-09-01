@@ -4,12 +4,13 @@ import 'package:todolist/constants/theme.dart';
 class AppTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final String labelText;
-  final bool? isfieldTypePassword;
+  final String? Function(String? text)? validator;
+
   const AppTextFormField(
       {Key? key,
       required this.controller,
       required this.labelText,
-      this.isfieldTypePassword = false})
+      this.validator})
       : super(key: key);
 
   @override
@@ -28,9 +29,9 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         decoration: InputDecoration(
           labelText: widget.labelText,
           fillColor: Colors.white,
-          floatingLabelStyle: const TextStyle(color: green),
+          floatingLabelStyle: const TextStyle(color: Colors.black45),
           focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: green, width: 1),
+            borderSide: BorderSide(color: grey, width: 1),
           ),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
@@ -39,6 +40,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
             ),
           ),
         ),
+        validator: widget.validator,
       ),
     );
   }

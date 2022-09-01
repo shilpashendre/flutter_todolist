@@ -71,10 +71,10 @@ class ToDoListDatabase {
         where: '${TodolistFileds.id} = ?', whereArgs: [list.id]);
   }
 
-  Future<int> delete(TodoList list) async {
+  Future<int> delete(int id) async {
     final db = await instance.database;
     return db.delete(tableTodolist,
-        where: '${TodolistFileds.id} = ?', whereArgs: [list.id]);
+        where: '${TodolistFileds.id} = ?', whereArgs: [id]);
   }
 
   Future close() async {
