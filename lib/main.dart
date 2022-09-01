@@ -43,6 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
             style: const TextStyle(color: Colors.black87),
           ),
         ),
-        body: const ToDoList());
+        body: const ToDoListPage());
   }
 }

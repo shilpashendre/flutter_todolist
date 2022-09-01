@@ -1,134 +1,116 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/db/todolist_database.dart';
+import 'package:todolist/enums/sections_type.dart';
+import 'package:todolist/model/todolist_modal.dart';
+import 'package:todolist/enums/action_type.dart';
+import 'package:todolist/pages/add_task_page.dart';
+import 'package:todolist/pages/sections_widget.dart';
+import 'package:todolist/widget/card_widget.dart';
 
-class ToDoList extends StatefulWidget {
-  const ToDoList({Key? key}) : super(key: key);
+class ToDoListPage extends StatefulWidget {
+  const ToDoListPage({Key? key}) : super(key: key);
 
   @override
-  State<ToDoList> createState() => _ToDoListState();
+  State<ToDoListPage> createState() => _ToDoListPageState();
 }
 
-class _ToDoListState extends State<ToDoList> {
-  List days = ["Today", "Tomorrow", "Upcoming"];
+class _ToDoListPageState extends State<ToDoListPage> {
+  late List<TodoList> todoList = [];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    refreshList();
+  }
+
+  @override
+  void dispose() {
+    ToDoListDatabase.instance.close();
+    super.dispose();
+  }
+
+  void refreshList() async {
+    setState(() {
+      isLoading = true;
+    });
+    this.todoList = await ToDoListDatabase.instance.getToDoList();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          children: [
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: days.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            days[index],
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(width: 15),
-                          const Icon(Icons.add_circle_outline)
-                        ],
-                      ),
-                    ),
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: const Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                                gradient: const LinearGradient(
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                  colors: [
-                                    Color(0xFF9BE9FF),
-                                    Color(0xFFE0F8FF),
-                                  ],
-                                )),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 12, right: 12, top: 12.0),
-                                      child: Text(
-                                        "Title",
-                                        style: TextStyle(
-                                            color: Color(0xFF4A4949),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 12, right: 12, top: 12.0),
-                                      child: Text(
-                                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                                        style: TextStyle(
-                                            color: Color(0xFF4A4949),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: const [
-                                        Padding(
-                                          padding: EdgeInsets.all(5.0),
-                                          child: Icon(
-                                            Icons.edit,
-                                            color: Color(0xFF353535),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(5.0),
-                                          child: Icon(
-                                            Icons.delete_outline_outlined,
-                                            color: Color(0xFF353535),
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ]),
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                );
-              },
-            ),
-          ],
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SectionsWidget(
+                title: SectionsType.TODAY.name,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AddTaskPage(
+                                actionType: ActionType.ADD,
+                                sectionsType: SectionsType.TODAY,
+                              )));
+                },
+              ),
+              CardWidget(
+                  sectionType: SectionsType.TODAY,
+                  todoList: todoList.isNotEmpty
+                      ? todoList
+                          .where((element) =>
+                              element.sections == SectionsType.TODAY.name)
+                          .toList()
+                      : []),
+              SectionsWidget(
+                  title: SectionsType.TOMORROW.name,
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AddTaskPage(
+                                  actionType: ActionType.ADD,
+                                  sectionsType: SectionsType.TOMORROW,
+                                )));
+                  }),
+              CardWidget(
+                  sectionType: SectionsType.TOMORROW,
+                  todoList: todoList.isNotEmpty
+                      ? todoList
+                          .where((element) =>
+                              element.sections == SectionsType.TOMORROW.name)
+                          .toList()
+                      : []),
+              SectionsWidget(
+                  title: SectionsType.UPCOMMING.name,
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AddTaskPage(
+                                  actionType: ActionType.ADD,
+                                  sectionsType: SectionsType.UPCOMMING,
+                                )));
+                  }),
+              CardWidget(
+                  sectionType: SectionsType.UPCOMMING,
+                  todoList: todoList.isNotEmpty
+                      ? todoList
+                          .where((element) =>
+                              element.sections == SectionsType.UPCOMMING.name)
+                          .toList()
+                      : []),
+            ],
+          ),
         ),
       ),
     );

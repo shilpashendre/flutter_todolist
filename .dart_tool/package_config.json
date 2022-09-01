@@ -68,6 +68,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/shilpas/Desktop/flutterSDK/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "lints",
       "rootUri": "file:///Users/shilpas/Desktop/flutterSDK/flutter/.pub-cache/hosted/pub.dartlang.org/lints-2.0.0",
       "packageUri": "lib/",
@@ -110,6 +116,18 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "sqflite",
+      "rootUri": "file:///Users/shilpas/Desktop/flutterSDK/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.3+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "sqflite_common",
+      "rootUri": "file:///Users/shilpas/Desktop/flutterSDK/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.2.1+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "stack_trace",
       "rootUri": "file:///Users/shilpas/Desktop/flutterSDK/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0",
       "packageUri": "lib/",
@@ -126,6 +144,12 @@
       "rootUri": "file:///Users/shilpas/Desktop/flutterSDK/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "synchronized",
+      "rootUri": "file:///Users/shilpas/Desktop/flutterSDK/flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-3.0.0+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "term_glyph",
@@ -152,7 +176,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-09-01T07:55:16.292285Z",
+  "generated": "2022-09-01T15:03:48.056341Z",
   "generator": "pub",
   "generatorVersion": "2.17.6"
 }
