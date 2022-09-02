@@ -60,17 +60,19 @@ class _ToDoListPageState extends State<ToDoListPage> {
                           builder: (context) => const AddTaskPage(
                                 actionType: ActionType.ADD,
                                 sectionsType: SectionsType.TODAY,
-                              )));
+                              ))).then((value) => refreshList());
                 },
               ),
               CardWidget(
-                  sectionType: SectionsType.TODAY,
-                  todoList: todoList.isNotEmpty
-                      ? todoList
-                          .where((element) =>
-                              element.sections == SectionsType.TODAY.name)
-                          .toList()
-                      : []),
+                sectionType: SectionsType.TODAY,
+                todoList: todoList.isNotEmpty
+                    ? todoList
+                        .where((element) =>
+                            element.sections == SectionsType.TODAY.name)
+                        .toList()
+                    : [],
+                refresh: () => refreshList(),
+              ),
               SectionsWidget(
                   title: SectionsType.TOMORROW.name,
                   onTap: () {
@@ -80,16 +82,18 @@ class _ToDoListPageState extends State<ToDoListPage> {
                             builder: (context) => const AddTaskPage(
                                   actionType: ActionType.ADD,
                                   sectionsType: SectionsType.TOMORROW,
-                                )));
+                                ))).then((value) => refreshList());
                   }),
               CardWidget(
-                  sectionType: SectionsType.TOMORROW,
-                  todoList: todoList.isNotEmpty
-                      ? todoList
-                          .where((element) =>
-                              element.sections == SectionsType.TOMORROW.name)
-                          .toList()
-                      : []),
+                sectionType: SectionsType.TOMORROW,
+                todoList: todoList.isNotEmpty
+                    ? todoList
+                        .where((element) =>
+                            element.sections == SectionsType.TOMORROW.name)
+                        .toList()
+                    : [],
+                refresh: () => refreshList(),
+              ),
               SectionsWidget(
                   title: SectionsType.UPCOMMING.name,
                   onTap: () {
@@ -99,16 +103,18 @@ class _ToDoListPageState extends State<ToDoListPage> {
                             builder: (context) => const AddTaskPage(
                                   actionType: ActionType.ADD,
                                   sectionsType: SectionsType.UPCOMMING,
-                                )));
+                                ))).then((value) => refreshList());
                   }),
               CardWidget(
-                  sectionType: SectionsType.UPCOMMING,
-                  todoList: todoList.isNotEmpty
-                      ? todoList
-                          .where((element) =>
-                              element.sections == SectionsType.UPCOMMING.name)
-                          .toList()
-                      : []),
+                sectionType: SectionsType.UPCOMMING,
+                todoList: todoList.isNotEmpty
+                    ? todoList
+                        .where((element) =>
+                            element.sections == SectionsType.UPCOMMING.name)
+                        .toList()
+                    : [],
+                refresh: () => refreshList(),
+              ),
             ],
           ),
         ),

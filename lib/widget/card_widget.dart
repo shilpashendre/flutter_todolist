@@ -6,13 +6,18 @@ import 'package:todolist/enums/sections_type.dart';
 import 'package:todolist/model/todolist_modal.dart';
 import 'package:todolist/enums/action_type.dart';
 import 'package:todolist/pages/add_task_page.dart';
+import 'package:todolist/widget/epmty_state_widgets.dart';
 import 'package:todolist/widget/icon_widget.dart';
 
 class CardWidget extends StatefulWidget {
   final List<TodoList> todoList;
   final SectionsType sectionType;
+  final VoidCallback refresh;
   const CardWidget(
-      {Key? key, required this.todoList, required this.sectionType})
+      {Key? key,
+      required this.todoList,
+      required this.sectionType,
+      required this.refresh})
       : super(key: key);
 
   @override
@@ -23,7 +28,6 @@ class _CardWidgetState extends State<CardWidget> {
   bool isLoading = false;
   @override
   void initState() {
-    print('data ${widget.todoList}');
     super.initState();
   }
 
@@ -121,7 +125,9 @@ class _CardWidgetState extends State<CardWidget> {
                                                 sectionsType:
                                                     widget.sectionType,
                                                 item: widget.todoList[index],
-                                                actionType: ActionType.EDIT)));
+                                                actionType:
+                                                    ActionType.EDIT))).then(
+                                        (value) => widget.refresh);
                                   },
                                   iconName: Icons.edit,
                                 ),
@@ -143,27 +149,6 @@ class _CardWidgetState extends State<CardWidget> {
               },
             ),
           )
-        : Expanded(
-            child: Container(
-              height: 220,
-              width: 200,
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 3,
-                      blurRadius: 3,
-                      offset: const Offset(5, 5), // changes position of shadow
-                    ),
-                  ],
-                  gradient: const LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [shadowGreyColor1, shadowGreyColor2],
-                  )),
-              child: const Center(child: Text("No data available ")),
-            ),
-          );
+        : const EmptyStateWidget();
   }
 }

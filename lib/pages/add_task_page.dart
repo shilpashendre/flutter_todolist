@@ -46,7 +46,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       } else {
         await addListItem();
       }
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(true);
     }
   }
 
