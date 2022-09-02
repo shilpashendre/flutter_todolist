@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:sqflite/sqflite.dart';
-import 'package:todolist/model/todolist_modal.dart';
+import 'package:todolist/model/todolist_model.dart';
 import 'package:path/path.dart';
 
 class ToDoListDatabase {
@@ -24,42 +24,42 @@ class ToDoListDatabase {
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
-  Future _createDB(Database db, int version) async {
-    final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    final textType = 'TEXT NOT NULL';
+  Future<void> _createDB(Database db, int version) async {
+    const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+    const textType = 'TEXT NOT NULL';
 
-    await db.execute('''CREATE TABLE $tableTodolist (
-  ${TodolistFileds.id} $idType,
-  ${TodolistFileds.title} $textType,
-  ${TodolistFileds.description} $textType,
-  ${TodolistFileds.sections} $textType
+    await db.execute('''CREATE TABLE ${TodoListFields.tableTodolist} (
+  ${TodoListFields.id} $idType,
+  ${TodoListFields.title} $textType,
+  ${TodoListFields.description} $textType,
+  ${TodoListFields.sections} $textType
 )''');
   }
 
   Future<TodoList> create(TodoList list) async {
     final db = await instance.database;
-    final id = await db.insert(tableTodolist, list.toJson());
 
-    return list.copy(id: id);
+    final id = await db.insert(TodoListFields.tableTodolist, list.toMap());
+
+    return list.copyWith(id: id);
   }
 
-  Future getToDoList() async {
+  Future<List<TodoList>> getToDoList() async {
     final db = await instance.database;
-    final orderBy = '${TodolistFileds.id} ASC';
+    const orderBy = '${TodoListFields.id} ASC';
 
-    final result = await db.query(tableTodolist, orderBy: orderBy);
-    return result.map((e) => TodoList.formJson(e)).toList();
+    final result = await db.query(TodoListFields.tableTodolist, orderBy: orderBy);
+
+    return result.map((e) => TodoList.fromMap(e)).toList();
   }
 
-  Future getItemByID(int id) async {
+  Future<TodoList> getItemByID(int id) async {
     final db = await instance.database;
-    final maps = await db.query(tableTodolist,
-        columns: TodolistFileds.values,
-        where: '${TodolistFileds.id} = ?',
-        whereArgs: [id]);
+    final maps = await db.query(TodoListFields.tableTodolist,
+        columns: TodoListFields.values, where: '${TodoListFields.id} = ?', whereArgs: [id]);
 
     if (maps.isNotEmpty) {
-      return TodoList.formJson(maps.first);
+      return TodoList.fromMap(maps.first);
     } else {
       throw Exception("ID $id not found");
     }
@@ -67,17 +67,17 @@ class ToDoListDatabase {
 
   Future<int> update(TodoList list) async {
     final db = await instance.database;
-    return db.update(tableTodolist, list.toJson(),
-        where: '${TodolistFileds.id} = ?', whereArgs: [list.id]);
+    return db.update(TodoListFields.tableTodolist, list.toMap(),
+        where: '${TodoListFields.id} = ?', whereArgs: [list.id]);
   }
 
   Future<int> delete(int id) async {
     final db = await instance.database;
-    return db.delete(tableTodolist,
-        where: '${TodolistFileds.id} = ?', whereArgs: [id]);
+    return db
+        .delete(TodoListFields.tableTodolist, where: '${TodoListFields.id} = ?', whereArgs: [id]);
   }
 
-  Future close() async {
+  Future<void> close() async {
     final db = await instance.database;
     db.close();
   }

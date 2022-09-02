@@ -1,8 +1,11 @@
 class Strings {
-  static const String loginPageTitle = "Log In";
-  static const String login = "LOGIN";
-  static const String password = "Password";
-  static const String forgotPassword = "Forgot Password?";
-  static const String userID = "User ID";
-  static const String rememberMe = "Remember me";
+  static const String title = "Title*";
+  static const String titleInputLabel = "Title";
+  static const String titleFieldErr = "Title is required";
+  static const String description = "Description:";
+  static const String errorTitle = "ERROR";
+  static const String errorInfo = "Something went wrong. Please try again.";
+  static const String globalOk = "OK";
+  static const String globalSave = "SAVE";
+  static const String globalUpdate = "UPDATE";
 }
