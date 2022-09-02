@@ -6,6 +6,7 @@ import 'package:todolist/model/todolist_model.dart';
 import 'package:todolist/enums/action_type.dart';
 import 'package:todolist/pages/add_task_page.dart';
 import 'package:todolist/streams/todo_stream_bloc.dart';
+import 'package:todolist/widget/epmty_state_widgets.dart';
 import 'package:todolist/widget/icon_widget.dart';
 
 class CardWidget extends StatefulWidget {
@@ -125,27 +126,6 @@ class _CardWidgetState extends State<CardWidget> {
               );
             },
           )
-        : Expanded(
-            child: Container(
-              height: 220,
-              width: 200,
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 3,
-                      blurRadius: 3,
-                      offset: const Offset(5, 5), // changes position of shadow
-                    ),
-                  ],
-                  gradient: const LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [shadowGreyColor1, shadowGreyColor2],
-                  )),
-              child: const Center(child: Text("No data available ")),
-            ),
-          );
+        : const EmptyStateWidget();
   }
 }
