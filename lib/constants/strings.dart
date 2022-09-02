@@ -1,4 +1,5 @@
 class Strings {
+  static const String todoPageTitle = "ToDo List";
   static const String title = "Title*";
   static const String titleInputLabel = "Title";
   static const String titleFieldErr = "Title is required";
